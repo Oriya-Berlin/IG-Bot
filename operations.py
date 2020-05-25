@@ -101,7 +101,7 @@ def start_shooting(driver, username, password, shooter, targets_list):
 #######################################################################################################
 
 
-def massive_unfollow():
+def unfollow_targets():
     pass
 
 

@@ -26,6 +26,12 @@ class Targets(Base):
     target_followed_date = Column('target_followed_date', Date)  # when we start to follow at the target
     shooter_name = Column('shooter_name', String)
     story_watched = Column('story_watched', Boolean, default=False)
+    is_following_canceled = Column('is_following_canceled', Boolean, default=False)
+
+
+class PotentialTargets(Base):
+    __tablename__ = "potentialtargets"
+    pass
 
 
 engine = create_engine('sqlite:///ig_bot.db', echo=True)

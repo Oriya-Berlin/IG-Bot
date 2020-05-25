@@ -37,6 +37,7 @@ def insert_target_to_DB(target_name, shooter_name, boolean):
     new_target.shooter_name = shooter_name
     new_target.target_followed_date = datetime.datetime.now()
     new_target.story_watched = boolean
+    new_target.is_following_canceled = False
     session.add(new_target)
     session.commit()
     session.close()
@@ -86,14 +87,17 @@ def update_bot_successes(shooter):
 
 
 # boolean, check the difference between current date, to the date we start to follow on some target
-def date_diff(diff):
+def check_date_diff(diff, bot_action_date):  # maybe we need to add 'shooter' and 'target' column as a parameters
     now = datetime.datetime.now()
-    bot_action_date = session.query(Targets)  # need to complete that
     delta = (now - bot_action_date).days
     if delta > diff:
         return True
     return False
 
+
+#
+def get_expired_targets():
+    pass
 
 '''
 update_bot_successes('ben_liba')
