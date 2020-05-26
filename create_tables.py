@@ -31,7 +31,11 @@ class Targets(Base):
 
 class PotentialTargets(Base):
     __tablename__ = "potentialtargets"
-    pass
+
+    id = Column('id', Integer, primary_key=True)
+    potential_target = Column('potential_target', String)
+    take_from_page = Column('take_from_page', String)
+    description = Column('description', String)
 
 
 engine = create_engine('sqlite:///ig_bot.db', echo=True)

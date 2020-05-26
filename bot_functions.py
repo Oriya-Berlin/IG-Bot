@@ -43,12 +43,14 @@ def unfollow_in_current_page(driver):
         if span.get_attribute('aria-label') == 'Following':
             span.click()
             break
-    SLEEP(1)
+    SLEEP(1.5)
     buttons = driver.find_elements_by_tag_name('button')
     for btn in buttons:
         if btn.get_attribute('innerHTML') == 'Unfollow':
             btn.click()
-            break
+            return True
+
+    return False
 
 
 # boolean, when we are in current user page, it check if this user is our follower
@@ -72,7 +74,6 @@ def search(driver, value):
 # find user by given name in the search result grid
 def find_user_in_search_result(driver, value):
     try:
-
         spans = driver.find_elements_by_tag_name('span')
         for span in spans:
             if span.get_attribute('innerHTML') == value:
@@ -86,9 +87,10 @@ def find_user_in_search_result(driver, value):
                 return True
 
     except:
-        print('ERROR')
+        print(f'ERROR on "find_user_in_search_result" function. user: {value}')
 
     return False
+
 
     #find = driver.find_element_by_xpath(f'//a[@href="/{value}/"]')
     #find.click()
@@ -212,5 +214,19 @@ def clean_search_box(driver):
         if input.get_attribute('placeholder') == 'Search':
             input.clear()
             break
+
+
+def get_user_name_in_current_page(driver):
+    links = driver.find_elements_by_tag_name('a')
+
+    for link in links:
+        text = link.get_attribute('innerHTML')
+        title = link.get_attribute('title')
+        href = clean_url(link.get_attribute('href'))
+
+        if text == title and text == href:
+            name = text
+            return name
+
 
 

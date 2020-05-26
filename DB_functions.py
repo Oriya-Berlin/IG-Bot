@@ -96,8 +96,22 @@ def check_date_diff(diff, bot_action_date):  # maybe we need to add 'shooter' an
 
 
 #
-def get_expired_targets():
-    pass
+def get_expired_targets(shooter, diff):  # need to test that
+    expired_targets_list = []
+    result = session.query(Targets).filter_by(shooter_name=shooter, is_following_canceled=False).all()
+    for res in result:
+        if check_date_diff(diff, res.target_followed_date):
+            expired_targets_list.append(res.target_name)
+    return expired_targets_list
+
+
+#
+def change_target_status(target_name, shooter):  # need to test that
+    user = session.query(Targets).filter_by(shooter_name=shooter, target_name=target_name)
+    user.is_following_canceled = True
+    session.commit()
+
+
 
 '''
 update_bot_successes('ben_liba')

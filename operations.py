@@ -3,9 +3,17 @@ from DB_functions import *
 
 
 #######################################################################################################
+"""
+    * login via another user (not one of the shooters client) -> 
+    * iterate each shooter from shooters list (must get array as parameter) ->
+    * open every shooter followers list ->
+    * all followers list to array ->
+    * insert every new follower to the DB if he does'nt exist.
+"""
 
 
 def update_shooter_followers_table(driver, username, password, shooters):
+
     login(driver, username, password)
     SLEEP(4)
 
@@ -34,7 +42,6 @@ def update_shooter_followers_table(driver, username, password, shooters):
 
 
 #######################################################################################################
-
 """
     * take an array of targets -> 
     * iterate each target followers list ->
@@ -42,6 +49,8 @@ def update_shooter_followers_table(driver, username, password, shooters):
     * follow and watch story ->
     * insert the new targets to the DB.
 """
+
+
 def start_shooting(driver, username, password, shooter, targets_list):
     login(driver, username, password)
     SLEEP(8)
@@ -99,10 +108,46 @@ def start_shooting(driver, username, password, shooter, targets_list):
 
 
 #######################################################################################################
+"""
+    * get an array of expired targets from DB -> 
+    * search each expired target on instagram ->
+    * unfollow him ->
+    * change target status on DB.
+"""
 
 
-def unfollow_targets():
+def unfollow_targets(driver, shooter, diff):  # need to test that
+    expired_list = get_expired_targets(shooter, diff)
+
+    for follower in expired_list:
+
+        search(driver, follower)
+        SLEEP(3)
+
+        success_1 = find_user_in_search_result(driver, follower)
+        SLEEP(3)
+
+        if success_1:
+            success_2 = unfollow_in_current_page(driver)
+            SLEEP(2)
+            if success_2:
+                change_target_status(follower, shooter)
+        else:
+            clean_search_box(driver)
+
+#######################################################################################################
+"""
+    * take an array of targets -> 
+    * iterate each target followers list ->
+    * filter users that's already exist in DB ->
+    * follow and watch story ->
+    * insert the new targets to the DB.
+"""
+
+
+def get_report_of_shooter():
     pass
 
 
+#######################################################################################################
 
