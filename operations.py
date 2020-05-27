@@ -12,7 +12,7 @@ from DB_functions import *
 """
 
 
-def update_shooter_followers_table(driver, username, password, shooters):
+def update_shooter_followers_table(driver, username, password, shooters_list):
 
     login(driver, username, password)
     SLEEP(4)
@@ -20,7 +20,7 @@ def update_shooter_followers_table(driver, username, password, shooters):
     not_now_window(driver)
     SLEEP(3)
 
-    for shooter in shooters:
+    for shooter in shooters_list:
 
         search(driver, shooter)
         SLEEP(3)

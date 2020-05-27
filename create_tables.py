@@ -13,6 +13,7 @@ class Followers(Base):
     follower_name = Column('follower_name', String, unique=False)
     follow_at_name = Column('follow_at_name', String, unique=False)
     effected_by_bot = Column('effected_by_bot', Boolean, default=False)
+    date_of_success = Column('date_of_success', Date, default=None)
 
     def __str__(self):
         return self.follower_name
@@ -28,6 +29,8 @@ class Targets(Base):
     story_watched = Column('story_watched', Boolean, default=False)
     is_following_canceled = Column('is_following_canceled', Boolean, default=False)
 
+    def __str__(self):
+        return self.target_followed_date
 
 class PotentialTargets(Base):
     __tablename__ = "potentialtargets"
@@ -45,9 +48,15 @@ engine = create_engine('sqlite:///ig_bot.db', echo=True)
 Session = sessionmaker(bind=engine)
 session = Session()
 
+'''
+def add_column(engine, table_name, column):
+    column_name = column.compile(dialect=engine.dialect)
+    column_type = column.type.compile(engine.dialect)
+    engine.execute(f'ALTER TABLE {table_name} ADD COLUMN {column_name} {column_type}')
 
-
-
+is_following_canceled = Column('is_following_canceled', Boolean, default=False)
+add_column(engine, 'targets', is_following_canceled)
+'''
 
 
 

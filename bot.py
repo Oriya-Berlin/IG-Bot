@@ -1,5 +1,5 @@
 from selenium import webdriver
-from shooter_details import password, username, shooter
+from shooter_details import password, username, shooters_list
 from bot_functions import *
 from operations import *
 
@@ -17,7 +17,7 @@ total_list = ['sapir.zisman', 'itsalexdaniel', 'roeyamos', 'morelleheller', 'mr.
 
 current_list = ['motivate.way', 'morelleheller']
 
-#update_shooter_followers_table(driver, username, password, ['ben_liba'])
+update_shooter_followers_table(driver, username, password, shooters_list)
 
 #if __name__ == "__main__":
 #start_shooting(driver, username, password, shooter, current_list)
