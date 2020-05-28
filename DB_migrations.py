@@ -36,7 +36,7 @@ with open('/home/berlin/Desktop/followers.json', 'r') as file:
         new_follower = Followers()
         new_follower.follower_name = dic['follower_name']
         new_follower.follow_at_name = dic['follow_at_name']
-        new_follower.effected_by_bot = bool(dic['effected_by_bot'])
+        new_follower.effected_by_bot = bool(dic['effected_by_bot'])  #need to change to int()
         session.add(new_follower)
         session.commit()
         session.close()

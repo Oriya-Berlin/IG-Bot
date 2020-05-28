@@ -84,11 +84,10 @@ def update_bot_successes(shooter):
         if is_he_in_my_targets(follower.follower_name, shooter):
             follower.effected_by_bot = True
             target_details = session.query(Targets).\
-                filter(and_(Targets.shooter_name==shooter, Targets.target_name==follower.follower_name))
+                filter(and_(Targets.shooter_name==shooter, Targets.target_name==follower.follower_name)).one()
 
-            print(target_details)
-            #follower.date_of_success = target_details.target_followed_date
-            #session.commit()
+            follower.date_of_success = target_details.target_followed_date
+            session.commit()
 
 
 # boolean, check the difference between current date, to the date we start to follow on some target
@@ -117,17 +116,12 @@ def change_target_status(target_name, shooter):  # need to test that
     session.commit()
 
 
-
 '''
 update_bot_successes('ben_liba')
 x = get_bot_successes('ben_liba')
 print(x)
 print(len(x))
 '''
-
-def splitit(date):
-    date = date.split('-')
-    return date
 
 
 
