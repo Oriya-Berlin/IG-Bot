@@ -53,10 +53,15 @@ def generate_spaces_in_txt_file(file_obj, number):
         file_obj.write('\n')
 
 
-x = get_bot_successes_for_report('ben_liba')
-print_report_to_txt_file('ben_liba', x)
-
-
+#x = get_bot_successes_for_report('ben_liba')
+#print_report_to_txt_file('ben_liba', x)
+old = [1, 2, 3, 4, 5]
+new = [5,6,7,8,9,0,3]
+for i in old:
+    if i in new:
+        continue
+    else:
+        print(f'{i} NOT')
 '''
 def print_ordered_data(successes_dict, shooter):
 

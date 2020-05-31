@@ -34,11 +34,20 @@ def update_shooter_followers_table(driver, username, password, shooters_list):
         scroll_all_followers_list(driver, shooter)
         SLEEP(5)
 
-        followers_list = all_followers_to_list(driver)
-        print(len(followers_list))
+        updated_followers_list = all_followers_to_list(driver)
+        print(len(updated_followers_list))
 
-        for follower in followers_list:
+        for follower in updated_followers_list:
             insert_follower_to_DB(follower, shooter)
+
+        # ----------------------------------------- need to test that
+        old_followers_list = get_all_followers_from_DB(shooter)
+        
+        for old_follower in old_followers_list:
+            if old_follower in updated_followers_list:
+                continue
+            else:
+                delete_follower_from_DB(old_follower, shooter)
 
 
 #######################################################################################################

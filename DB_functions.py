@@ -128,6 +128,13 @@ def change_target_status(target_name, shooter):  # need to test that
     session.commit()
 
 
+#
+def delete_follower_from_DB(follower, shooter):
+        session.query(Followers).filter_by(follower_name=follower, follow_at_name=shooter).delete()
+        session.commit()
+
+
+
 '''
 update_bot_successes('ben_liba')
 x = get_bot_successes('ben_liba')
