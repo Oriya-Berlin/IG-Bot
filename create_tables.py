@@ -32,6 +32,7 @@ class Targets(Base):
     def __str__(self):
         return self.target_followed_date
 
+
 class PotentialTargets(Base):
     __tablename__ = "potentialtargets"
 

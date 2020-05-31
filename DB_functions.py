@@ -69,11 +69,23 @@ def filter_target_list(target_list, shooter):
 
 
 # return array, with all bot successes of specific shooter
-def get_bot_successes(shooter):
+def get_bot_successes_list(shooter):
     result = session.query(Followers).filter(Followers.follow_at_name==shooter, Followers.effected_by_bot==True).all()
     successes_list = []
     for res in result:
         successes_list.append(res.follower_name)
+    return successes_list
+
+
+# return pairs: {name, date}
+def get_bot_successes_dic(shooter):
+    result = session.query(Followers).filter(Followers.follow_at_name == shooter, Followers.effected_by_bot == True).all()
+    successes_list = []
+
+    for res in result:
+        dic = {'name': f'{res.follower_name}', 'date': f'{res.date_of_success}'}
+        successes_list.append(dic)
+
     return successes_list
 
 
@@ -122,6 +134,3 @@ x = get_bot_successes('ben_liba')
 print(x)
 print(len(x))
 '''
-
-
-
