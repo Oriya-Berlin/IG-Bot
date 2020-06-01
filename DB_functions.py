@@ -134,6 +134,32 @@ def delete_follower_from_DB(follower, shooter):
         session.commit()
 
 
+# insert new target to 'OnHoldTargets' table
+def insert_target_to_OnHold_table(target_name, has_taken_from, shooter_name):
+    if not is_he_in_my_followers(target_name, shooter_name):
+        if is_he_in_my_targets(target_name, shooter_name):
+            new_target = OnHoldTargets()
+            new_target.name = target_name
+            new_target.shooter_name = shooter_name
+            new_target.has_taken_from = has_taken_from
+            new_target.is_iterated = False
+            session.add(new_target)
+            session.commit()
+            session.close()
+
+
+# will return 500 'on-hold' target of specific shooter
+def get_targets_from_OnHold_table(shooter):  # need to test that
+    waiting_list = []
+    counter = 0
+    all_shooters_waiting_targets = session.query(OnHoldTargets).filter_by(shooter_name=shooter, is_iterated=False).all()
+    for i in all_shooters_waiting_targets:
+        if counter > 500:
+            break
+        waiting_list.append(i.name)
+        counter = counter + 1
+    return waiting_list
+
 
 '''
 update_bot_successes('ben_liba')

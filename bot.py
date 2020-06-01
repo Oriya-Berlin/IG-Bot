@@ -8,7 +8,7 @@ from operations import *
 
 path = 'https://www.instagram.com/'
 driver = webdriver.Chrome('/home/berlin/PycharmProjects/IG_Bot/Driver/chromedriver')
-driver.get(path)
+driver.get(path)  # maybe that the problem !!!
 SLEEP(3)
 
 

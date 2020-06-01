@@ -24,7 +24,7 @@ class Targets(Base):
 
     id = Column('id', Integer, primary_key=True)
     target_name = Column('target_name', String)
-    target_followed_date = Column('target_followed_date', Date)  # when we start to follow at the target
+    target_followed_date = Column('target_followed_date', Date)
     shooter_name = Column('shooter_name', String)
     story_watched = Column('story_watched', Boolean, default=False)
     is_following_canceled = Column('is_following_canceled', Boolean, default=False)
@@ -40,6 +40,16 @@ class PotentialTargets(Base):
     potential_target = Column('potential_target', String)
     take_from_page = Column('take_from_page', String)
     description = Column('description', String)
+
+
+class OnHoldTargets(Base):
+    __tablename__ = "onholdtargets"
+
+    id = Column('id', Integer, primary_key=True)
+    name = Column('name', String)
+    has_taken_from = Column('has_taken_from', String)  # follower of who
+    shooter_name = Column('shooter_name', String)
+    is_iterated = Column('is_iterated', Boolean, default=False)
 
 
 engine = create_engine('sqlite:///ig_bot.db', echo=True)

@@ -1,5 +1,6 @@
 from bot_functions import *
 from DB_functions import *
+from report_functions import *
 
 
 #######################################################################################################
@@ -42,7 +43,7 @@ def update_shooter_followers_table(driver, username, password, shooters_list):
 
         # ----------------------------------------- need to test that
         old_followers_list = get_all_followers_from_DB(shooter)
-        
+
         for old_follower in old_followers_list:
             if old_follower in updated_followers_list:
                 continue
@@ -60,7 +61,7 @@ def update_shooter_followers_table(driver, username, password, shooters_list):
 """
 
 
-def start_shooting(driver, username, password, shooter, targets_list):
+def start_shooting(driver, username, password, shooter, targets_list):  # need to change that according to 500 limit
     login(driver, username, password)
     SLEEP(8)
 
@@ -144,19 +145,61 @@ def unfollow_targets(driver, shooter, diff):  # need to test that
         else:
             clean_search_box(driver)
 
+
 #######################################################################################################
 """
-    * take an array of targets -> 
-    * iterate each target followers list ->
-    * filter users that's already exist in DB ->
-    * follow and watch story ->
-    * insert the new targets to the DB.
+    * grab all bot successes from Followers table -> 
+    * push them into ordered dict ->
+    * print them to new txt file.
 """
 
 
-def get_report_of_shooter():
-    pass
+def get_report_of_shooter(shooter):
+    successes_dict = get_bot_successes_for_report(shooter)
+    print_report_to_txt_file(shooter, successes_dict)
 
+
+#######################################################################################################
+"""
+    * grab all bot successes from Followers table -> 
+    * push them into ordered dict ->
+    * print them to new txt file.
+"""
+
+
+def collect_targets(driver, username, password, shooter, arsenal_targets_list):  # need to test & look at that again
+
+    login(driver, username, password)
+    SLEEP(8)
+
+    not_now_window(driver)
+    SLEEP(3)
+
+    for arsenal in arsenal_targets_list:
+
+        search(driver, arsenal)
+        SLEEP(3)
+
+        find_user_in_search_result(driver, arsenal)
+        SLEEP(3)
+
+        open_followers_list_in_current_page(driver)
+        SLEEP(3)
+
+        scroll_all_followers_list(driver, arsenal)
+        SLEEP(5)
+
+        followers_list = all_followers_to_list(driver)
+        print(len(followers_list))
+
+        for follower in followers_list:
+            insert_target_to_OnHold_table(follower, arsenal, shooter)
+
+        close_followers_list(driver)
+        SLEEP(1)
+
+        driver.refresh()
+        SLEEP(3)
 
 #######################################################################################################
 
