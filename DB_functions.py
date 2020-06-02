@@ -5,7 +5,7 @@ import datetime
 
 
 # get all followers of specific shooter, return array
-def get_all_followers_from_DB(follow_at_name):
+def get_all_followers_from_DB(follow_at_name):  # change name to 'get_all_my_followers_from_Followers_table'
 
     followers_list = []
     result = session.query(Followers).filter_by(follow_at_name=follow_at_name).all()
@@ -16,7 +16,7 @@ def get_all_followers_from_DB(follow_at_name):
 
 
 # insert new follower to 'Followers' table
-def insert_follower_to_DB(follower_name, follow_at_name):
+def insert_follower_to_DB(follower_name, follow_at_name):  # change name to 'insert_follower_to_Followers_table'
 
     if not is_he_in_my_followers(follower_name, follow_at_name):
         new_follower = Followers()
@@ -31,7 +31,7 @@ def insert_follower_to_DB(follower_name, follow_at_name):
 
 
 # insert new target to the 'Targets' table
-def insert_target_to_DB(target_name, shooter_name, boolean):
+def insert_target_to_Targets_table(target_name, shooter_name, boolean):
     new_target = Targets()
     new_target.target_name = target_name
     new_target.shooter_name = shooter_name
@@ -129,9 +129,9 @@ def change_target_status(target_name, shooter):  # need to test that
 
 
 #
-def delete_follower_from_DB(follower, shooter):
-        session.query(Followers).filter_by(follower_name=follower, follow_at_name=shooter).delete()
-        session.commit()
+def delete_follower_from_Followers_table(follower, shooter):
+    session.query(Followers).filter_by(follower_name=follower, follow_at_name=shooter).delete()
+    session.commit()
 
 
 # insert new target to 'OnHoldTargets' table
@@ -149,16 +149,23 @@ def insert_target_to_OnHold_table(target_name, has_taken_from, shooter_name):
 
 
 # will return 500 'on-hold' target of specific shooter
-def get_targets_from_OnHold_table(shooter):  # need to test that
+def get_targets_from_OnHold_table(shooter):
     waiting_list = []
-    counter = 0
+    counter = 1
     all_shooters_waiting_targets = session.query(OnHoldTargets).filter_by(shooter_name=shooter, is_iterated=False).all()
+
     for i in all_shooters_waiting_targets:
         if counter > 500:
             break
         waiting_list.append(i.name)
         counter = counter + 1
     return waiting_list
+
+
+# delete target from 'OnHold' table
+def delete_target_from_OnHold_table(follower, shooter):
+    session.query(OnHoldTargets).filter_by(name=follower, shooter_name=shooter).delete()
+    session.commit()
 
 
 '''

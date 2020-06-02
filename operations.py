@@ -48,7 +48,7 @@ def update_shooter_followers_table(driver, username, password, shooters_list):
             if old_follower in updated_followers_list:
                 continue
             else:
-                delete_follower_from_DB(old_follower, shooter)
+                delete_follower_from_Followers_table(old_follower, shooter)
 
 
 #######################################################################################################
@@ -61,13 +61,14 @@ def update_shooter_followers_table(driver, username, password, shooters_list):
 """
 
 
-def start_shooting(driver, username, password, shooter, targets_list):  # need to change that according to 500 limit
+def start_shooting(driver, username, password, shooter):  # need to test that
     login(driver, username, password)
     SLEEP(8)
 
     not_now_window(driver)
     SLEEP(3)
-
+#
+    """
     for target in targets_list:
 
         search(driver, target)
@@ -90,31 +91,36 @@ def start_shooting(driver, username, password, shooter, targets_list):  # need t
 
         driver.refresh()
         SLEEP(3)
+        """
+#
+    targets_list = get_targets_from_OnHold_table(shooter)
+    for target in targets_list:
 
-        for follower in followers_list:
+        search(driver, target)
+        SLEEP(4)
 
-            search(driver, follower)
-            SLEEP(4)
+        success = find_user_in_search_result(driver, target)
+        if success:   # need to test that
 
-            success = find_user_in_search_result(driver, follower)
-            if success:   # need to test that
+            SLEEP(3)
+            follow_in_current_page(driver)
+            SLEEP(2)
 
-                SLEEP(3)
-                follow_in_current_page(driver)
-                SLEEP(2)
+            watch_story(driver, target)
+            SLEEP(2)
 
-                watch_story(driver, follower)
-                SLEEP(2)
+            boolean = close_story(driver)
+            SLEEP(1)
 
-                boolean = close_story(driver)
-                SLEEP(1)
-
-                if not is_he_in_my_targets(follower, shooter):
-                    insert_target_to_DB(follower, shooter, boolean)
-
-                SLEEP(1)
+            if not is_he_in_my_targets(target, shooter):
+                insert_target_to_Targets_table(target, shooter, boolean)
+                delete_target_from_OnHold_table(target, shooter)
             else:
-                clean_search_box(driver)
+                delete_target_from_OnHold_table(target, shooter)
+
+            SLEEP(1)
+        else:
+            clean_search_box(driver)
 
 
 #######################################################################################################
@@ -161,9 +167,9 @@ def get_report_of_shooter(shooter):
 
 #######################################################################################################
 """
-    * grab all bot successes from Followers table -> 
-    * push them into ordered dict ->
-    * print them to new txt file.
+    * take a list of arsenals (users with mass of followers or with potential followers) -> 
+    * iterate every arsenal and grab all his followers ->
+    * insert every follower to 'OnHold' table under the specific shooter.
 """
 
 
@@ -201,5 +207,17 @@ def collect_targets(driver, username, password, shooter, arsenal_targets_list): 
         driver.refresh()
         SLEEP(3)
 
-#######################################################################################################
 
+#######################################################################################################
+"""
+    * take a list of arsenals (users with mass of followers or with potential followers) -> 
+    * iterate every arsenal and grab all his followers ->
+    * insert every follower to 'OnHold' table under the specific shooter.
+"""
+
+
+def many_shooters_operation():
+    pass
+
+
+#######################################################################################################
