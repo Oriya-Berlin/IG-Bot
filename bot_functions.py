@@ -91,7 +91,6 @@ def find_user_in_search_result(driver, value):
 
     return False
 
-
     #find = driver.find_element_by_xpath(f'//a[@href="/{value}/"]')
     #find.click()
 
@@ -100,6 +99,18 @@ def find_user_in_search_result(driver, value):
 def open_followers_list_in_current_page(driver):
     followers_list = driver.find_element_by_xpath('//*[text()=" followers"]')
     followers_list.click()
+
+
+# get rid of 'Save Your Login Info?' window when shooter connect
+def save_your_login_info_window(driver):  #need to test that
+    try:
+        buttons = driver.find_elements_by_tag_name('button')
+        for btn in buttons:
+            if btn.get_attribute('alt') == 'Not Now':
+                """ 'Save Info' is the other option """
+                btn.click()
+    except:
+        return
 
 
 # get rid of 'not now' window when shooter connect

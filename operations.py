@@ -18,6 +18,9 @@ def update_shooter_followers_table(driver, username, password, shooters_list):
     login(driver, username, password)
     SLEEP(4)
 
+    save_your_login_info_window(driver)
+    SLEEP(3)
+
     not_now_window(driver)
     SLEEP(3)
 
@@ -64,6 +67,9 @@ def update_shooter_followers_table(driver, username, password, shooters_list):
 def start_shooting(driver, username, password, shooter):  # need to test that
     login(driver, username, password)
     SLEEP(8)
+
+    save_your_login_info_window(driver)
+    SLEEP(3)
 
     not_now_window(driver)
     SLEEP(3)
@@ -178,6 +184,9 @@ def collect_targets(driver, username, password, shooter, arsenal_targets_list): 
     login(driver, username, password)
     SLEEP(8)
 
+    save_your_login_info_window(driver)
+    SLEEP(3)
+    
     not_now_window(driver)
     SLEEP(3)
 
