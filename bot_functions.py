@@ -106,9 +106,11 @@ def save_your_login_info_window(driver):  #need to test that
     try:
         buttons = driver.find_elements_by_tag_name('button')
         for btn in buttons:
-            if btn.get_attribute('alt') == 'Not Now':
-                """ 'Save Info' is the other option """
+            if btn.get_attribute('innerHTML') == 'Save Info':
+                """ 'Not Now' is the other option """
                 btn.click()
+                SLEEP(2)
+                driver.refresh()
     except:
         return
 
@@ -118,8 +120,13 @@ def not_now_window(driver):
     #if driver.find_element_by_xpath('//*[text()="Not Now"]') != None:
     #print('not now EXIST')
     try:
-        N_N = driver.find_element_by_xpath('//*[text()="Not Now"]')
-        N_N.click()
+        buttons = driver.find_elements_by_tag_name('button')
+        for btn in buttons:
+            if btn.get_attribute('innerHTML') == 'Not Now':
+                """ 'Not Now' is the other option """
+                btn.click()
+        #N_N = driver.find_element_by_xpath('//*[text()="Not Now"]')
+        #N_N.click()
     except:
         return
 
@@ -238,6 +245,19 @@ def get_user_name_in_current_page(driver):
         if text == title and text == href:
             name = text
             return name
+
+
+# boolean, return true if account is private
+def check_if_current_page_is_private(driver):
+    tags = driver.find_elements_by_tag_name('h2')
+    for tag in tags:
+        if tag.get_attribute('innerHTML') == 'This Account is Private':
+            return True
+    return False
+
+
+# requested
+# try on follow function
 
 
 

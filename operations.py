@@ -65,6 +65,7 @@ def update_shooter_followers_table(driver, username, password, shooters_list):
 
 
 def start_shooting(driver, username, password, shooter):  # need to test that
+    """
     login(driver, username, password)
     SLEEP(8)
 
@@ -73,7 +74,8 @@ def start_shooting(driver, username, password, shooter):  # need to test that
 
     not_now_window(driver)
     SLEEP(3)
-#
+    """
+#####################################
     """
     for target in targets_list:
 
@@ -179,14 +181,14 @@ def get_report_of_shooter(shooter):
 """
 
 
-def collect_targets(driver, username, password, shooter, arsenal_targets_list):  # need to test & look at that again
+def collect_targets(driver, username, password, shooter, arsenal_targets_list):
 
     login(driver, username, password)
     SLEEP(8)
 
     save_your_login_info_window(driver)
-    SLEEP(3)
-    
+    SLEEP(6)
+
     not_now_window(driver)
     SLEEP(3)
 
@@ -198,23 +200,29 @@ def collect_targets(driver, username, password, shooter, arsenal_targets_list): 
         find_user_in_search_result(driver, arsenal)
         SLEEP(3)
 
-        open_followers_list_in_current_page(driver)
-        SLEEP(3)
+        if not check_if_current_page_is_private(driver):
 
-        scroll_all_followers_list(driver, arsenal)
-        SLEEP(5)
+            open_followers_list_in_current_page(driver)
+            SLEEP(3)
 
-        followers_list = all_followers_to_list(driver)
-        print(len(followers_list))
+            scroll_all_followers_list(driver, arsenal)
+            SLEEP(5)
 
-        for follower in followers_list:
-            insert_target_to_OnHold_table(follower, arsenal, shooter)
+            followers_list = all_followers_to_list(driver)
+            print(len(followers_list))
 
-        close_followers_list(driver)
-        SLEEP(1)
+            for follower in followers_list:
+                insert_target_to_OnHold_table(follower, arsenal, shooter)
 
-        driver.refresh()
-        SLEEP(3)
+            close_followers_list(driver)
+            SLEEP(1)
+
+        else:
+            follow_in_current_page(driver)
+            SLEEP(3)
+            
+            driver.refresh()
+            SLEEP(3)
 
 
 #######################################################################################################

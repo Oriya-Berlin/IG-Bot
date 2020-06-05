@@ -59,6 +59,7 @@ engine = create_engine('sqlite:///ig_bot.db', echo=True)
 Session = sessionmaker(bind=engine)
 session = Session()
 
+
 '''
 def add_column(engine, table_name, column):
     column_name = column.compile(dialect=engine.dialect)

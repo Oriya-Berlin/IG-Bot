@@ -55,6 +55,12 @@ def is_he_in_my_targets(target_name, shooter_name):
     return exist
 
 
+# boolean, check if that user is in 'OnHoldTargets' table under specific shooter
+def is_he_in_my_OnHold_targets(target_name, shooter_name):
+    exist = session.query(exists().where(and_(OnHoldTargets.name==target_name, OnHoldTargets.shooter_name==shooter_name))).scalar()
+    return exist
+
+
 # takes an array as a parameter, and return filtered array - without users that already in our targets/followers table
 def filter_target_list(target_list, shooter):
     filtered_list = []
@@ -128,7 +134,7 @@ def change_target_status(target_name, shooter):  # need to test that
     session.commit()
 
 
-#
+# delete specific follower from 'Followers' table
 def delete_follower_from_Followers_table(follower, shooter):
     session.query(Followers).filter_by(follower_name=follower, follow_at_name=shooter).delete()
     session.commit()
@@ -137,15 +143,16 @@ def delete_follower_from_Followers_table(follower, shooter):
 # insert new target to 'OnHoldTargets' table
 def insert_target_to_OnHold_table(target_name, has_taken_from, shooter_name):
     if not is_he_in_my_followers(target_name, shooter_name):
-        if is_he_in_my_targets(target_name, shooter_name):
-            new_target = OnHoldTargets()
-            new_target.name = target_name
-            new_target.shooter_name = shooter_name
-            new_target.has_taken_from = has_taken_from
-            new_target.is_iterated = False
-            session.add(new_target)
-            session.commit()
-            session.close()
+        if not is_he_in_my_targets(target_name, shooter_name):
+            if not is_he_in_my_OnHold_targets(target_name, shooter_name):
+                new_target = OnHoldTargets()
+                new_target.name = target_name
+                new_target.shooter_name = shooter_name
+                new_target.has_taken_from = has_taken_from
+                new_target.is_iterated = False
+                session.add(new_target)
+                session.commit()
+                session.close()
 
 
 # will return 500 'on-hold' target of specific shooter

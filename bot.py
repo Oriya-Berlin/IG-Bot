@@ -13,15 +13,18 @@ SLEEP(3)
 
 
 total_list = ['sapir.zisman', 'itsalexdaniel', 'roeyamos', 'morelleheller', 'mr.landsman', 'pazoshran',
-     'result_academy', 'motivate.way', 'yuval_hass', 'iccm_college']
+     'result_academy', 'motivate.way', 'yuval_hass', 'iccm_college', 'barak_bit']
 
-current_list = ['motivate.way', 'morelleheller']
 
+
+
+#collect_targets(driver, '', '', '', ['iccm_college'])
+
+#start_shooting(driver, '', '', [''])
 
 
 #update_shooter_followers_table(driver, username, password, shooters_list)
 
-#if __name__ == "__main__":
-#start_shooting(driver, username, password, shooter, current_list)
+
 
 
