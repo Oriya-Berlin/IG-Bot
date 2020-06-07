@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, Date, Boolean
+from sqlalchemy import create_engine, Column, Integer, String, Date, Boolean, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -33,6 +33,8 @@ class Targets(Base):
         return self.target_followed_date
 
 
+# -------------------------------------------------------
+# need to delete that table
 class PotentialTargets(Base):
     __tablename__ = "potentialtargets"
 
@@ -40,6 +42,7 @@ class PotentialTargets(Base):
     potential_target = Column('potential_target', String)
     take_from_page = Column('take_from_page', String)
     description = Column('description', String)
+# -------------------------------------------------------
 
 
 class OnHoldTargets(Base):
@@ -50,6 +53,17 @@ class OnHoldTargets(Base):
     has_taken_from = Column('has_taken_from', String)  # follower of who
     shooter_name = Column('shooter_name', String)
     is_iterated = Column('is_iterated', Boolean, default=False)
+
+
+class HighPotentialTargets(Base):
+    __tablename__ = "highpotentialtargets"
+
+    id = Column('id', Integer, primary_key=True)
+    potential_target_name = Column('potential_target_name', String)
+    followers_following_ratio = Column('followers_following_ratio', Float)
+    follow_request_received_counter = Column('follow_request_received_counter', Integer)
+    return_follower_counter = Column('return_follower_counter', Integer)
+    return_received_ratio = Column('return_received_ratio', Float)
 
 
 engine = create_engine('sqlite:///ig_bot.db', echo=True)

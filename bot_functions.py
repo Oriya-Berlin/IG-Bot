@@ -172,6 +172,11 @@ def get_followers_number(driver, username):
     return number
 
 
+# scrap the following number on current user page
+def get_following_number(driver, username):
+    elements = driver.find_elements_by_
+
+
 # watch story of user if exist
 def watch_story(driver, username):
 
@@ -234,6 +239,7 @@ def clean_search_box(driver):
             break
 
 
+# extract user name when we in current page
 def get_user_name_in_current_page(driver):
     links = driver.find_elements_by_tag_name('a')
 

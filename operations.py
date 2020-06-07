@@ -65,7 +65,7 @@ def update_shooter_followers_table(driver, username, password, shooters_list):
 
 
 def start_shooting(driver, username, password, shooter):  # need to test that
-    """
+    """  """
     login(driver, username, password)
     SLEEP(8)
 
@@ -74,7 +74,7 @@ def start_shooting(driver, username, password, shooter):  # need to test that
 
     not_now_window(driver)
     SLEEP(3)
-    """
+
 #####################################
     """
     for target in targets_list:
@@ -238,3 +238,6 @@ def many_shooters_operation():
 
 
 #######################################################################################################
+def MainOperation():
+    pass
+
