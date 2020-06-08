@@ -175,6 +175,11 @@ def delete_target_from_OnHold_table(follower, shooter):
     session.commit()
 
 
+# insert user with high potential to be serial follower
+def insert_user_to_HighPotentialTargets_table():
+    pass
+
+
 '''
 update_bot_successes('ben_liba')
 x = get_bot_successes('ben_liba')

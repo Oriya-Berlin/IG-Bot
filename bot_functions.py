@@ -1,4 +1,4 @@
-import time
+from general_functions import *
 
 
 # Login to instagram
@@ -49,7 +49,6 @@ def unfollow_in_current_page(driver):
         if btn.get_attribute('innerHTML') == 'Unfollow':
             btn.click()
             return True
-
     return False
 
 
@@ -85,10 +84,8 @@ def find_user_in_search_result(driver, value):
             if link.get_attribute('href') == f'/{value}/':
                 link.click()
                 return True
-
     except:
         print(f'ERROR on "find_user_in_search_result" function. user: {value}')
-
     return False
 
     #find = driver.find_element_by_xpath(f'//a[@href="/{value}/"]')
@@ -158,23 +155,37 @@ def scroll_all_followers_list(driver, target):
             continue
 
 
-# sleep function
-def SLEEP(seconds):
-    time.sleep(seconds)
+# get following number on PRIVATE account
+def get_following_number_on_PRIVATE_account(driver):  # maybe we need to add name parameter
+    elements = driver.find_elements_by_tag_name('span')
+    for element in elements:
+        inner_text = element.get_attribute('innerHTML')
+        try:
+            exist = inner_text.endswith(' following')
+            if exist:
+                number = extract_and_convert_number(element.text)
+                return number
+        except:
+            pass
+
+
+#  here we need the following number
+def get_following_number_on_PUBLIC_account(driver):  # maybe we need to add name parameter
+    links = driver.find_elements_by_tag_name('a')
+    name = get_user_name_in_PUBLIC_current_page(driver)  # that row
+    for link in links:
+        if link.get_attribute('href') == f'https://www.instagram.com/{name}/following/':
+            number = extract_and_convert_number(link.text)
+            return number
 
 
 # scrap the followers number on current user page
-def get_followers_number(driver, username):
+def get_followers_number(driver, username):  # maybe its public
     element = driver.find_element_by_xpath(f"//a[@href='/{username}/followers/']/span")
     number = element.get_attribute('title')
     number = number.replace(',', '')
     number = int(number)
     return number
-
-
-# scrap the following number on current user page
-def get_following_number(driver, username):
-    elements = driver.find_elements_by_
 
 
 # watch story of user if exist
@@ -186,13 +197,6 @@ def watch_story(driver, username):
         if img.get_attribute('alt') == attribute:
             img.click()
             return True
-
-
-# get url string and return only the name from the url
-def clean_url(url):
-    url = url.split('/')
-    user_name = url[3]
-    return user_name
 
 
 # take all the 'a' elements, extract the names and return them on array
@@ -239,8 +243,8 @@ def clean_search_box(driver):
             break
 
 
-# extract user name when we in current page
-def get_user_name_in_current_page(driver):
+# extract users names after we scrolled all the followers list
+def get_user_name_in_followers_list(driver):
     links = driver.find_elements_by_tag_name('a')
 
     for link in links:
@@ -253,6 +257,25 @@ def get_user_name_in_current_page(driver):
             return name
 
 
+# extract user name when we in PUBLIC current page
+def get_user_name_in_PUBLIC_current_page(driver):
+    tags = driver.find_elements_by_tag_name('h2')
+    links = driver.find_elements_by_tag_name('a')
+    for tag in tags:
+        name1 = tag.get_attribute('innerHTML')
+        for link in links:
+            name2 = clean_url(link.get_attribute('href'))
+            if name1 == name2:
+                return name1
+
+
+# extract user name when we in PRIVATE current page
+def get_user_name_in_PRIVATE_current_page(driver):
+    tags = driver.find_elements_by_tag_name('h2')
+    name = tags[0].get_attribute('innerHTML')
+    return name
+
+
 # boolean, return true if account is private
 def check_if_current_page_is_private(driver):
     tags = driver.find_elements_by_tag_name('h2')
@@ -261,9 +284,6 @@ def check_if_current_page_is_private(driver):
             return True
     return False
 
-
-# requested
-# try on follow function
 
 
 
