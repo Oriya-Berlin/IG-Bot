@@ -45,14 +45,14 @@ def update_shooter_followers_table(driver, username, password, shooters_list):
             insert_follower_to_DB(follower, shooter)
 
         # ----------------------------------------- need to test that
-        old_followers_list = get_all_followers_from_DB(shooter)
+        old_followers_list = get_all_followers_from_DB(shooter)  # list with non relevant followers
 
         for old_follower in old_followers_list:
             if old_follower in updated_followers_list:
                 continue
             else:
                 delete_follower_from_Followers_table(old_follower, shooter)
-
+    # update bot succsees
 
 #######################################################################################################
 """
@@ -75,32 +75,6 @@ def start_shooting(driver, username, password, shooter):  # need to test that
     not_now_window(driver)
     SLEEP(3)
 
-#####################################
-    """
-    for target in targets_list:
-
-        search(driver, target)
-        SLEEP(3)
-
-        find_user_in_search_result(driver, target)
-        SLEEP(3)
-
-        open_followers_list_in_current_page(driver)
-        SLEEP(3)
-
-        scroll_all_followers_list(driver, target)
-        SLEEP(5)
-
-        followers_list = all_followers_to_list(driver)
-        print(len(followers_list))
-
-        close_followers_list(driver)
-        SLEEP(1)
-
-        driver.refresh()
-        SLEEP(3)
-        """
-#
     targets_list = get_targets_from_OnHold_table(shooter)
     for target in targets_list:
 
@@ -108,7 +82,7 @@ def start_shooting(driver, username, password, shooter):  # need to test that
         SLEEP(4)
 
         success = find_user_in_search_result(driver, target)
-        if success:   # need to test that
+        if success:
 
             SLEEP(3)
             follow_in_current_page(driver)
@@ -119,6 +93,25 @@ def start_shooting(driver, username, password, shooter):  # need to test that
 
             boolean = close_story(driver)
             SLEEP(1)
+
+
+            # -----------------------------------------------------------------  need to test that
+            is_private = check_if_current_page_is_private(driver)
+
+            if is_private:
+                following_num = get_following_number_on_PRIVATE_account(driver)
+                followers_num = get_followers_number_on_PRIVATE_account(driver)
+            else:
+                following_num = get_following_number_on_PUBLIC_account(driver, target)
+                followers_num = get_followers_number_on_PUBLIC_account(driver)
+
+            if following_num > 100:
+                ratio = calculate_ratio(following_num, followers_num)
+                if ratio > 1:
+                    insert_user_to_HighPotentialTargets_table(target, ratio)
+                    increase_follow_request_counter(target)
+                    
+            # ------------------------------------------------------------------
 
             if not is_he_in_my_targets(target, shooter):
                 insert_target_to_Targets_table(target, shooter, boolean)

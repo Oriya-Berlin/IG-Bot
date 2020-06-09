@@ -30,17 +30,16 @@ login(driver, username, password)
 SLEEP(3)
 
 save_your_login_info_window(driver)
-SLEEP(3)
+SLEEP(5)  # need to add more time
 
 not_now_window(driver)
 SLEEP(3)
 
-search(driver, 'khvpytdlh')
+search(driver, 'leaalterovitch')
 SLEEP(3)
 
-find_user_in_search_result(driver, 'khvpytdlh')
+find_user_in_search_result(driver, 'leaalterovitch')
 SLEEP(3)
-
 
 
 

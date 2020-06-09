@@ -61,9 +61,9 @@ class HighPotentialTargets(Base):
     id = Column('id', Integer, primary_key=True)
     potential_target_name = Column('potential_target_name', String)
     followers_following_ratio = Column('followers_following_ratio', Float)
-    follow_request_received_counter = Column('follow_request_received_counter', Integer)
-    return_follower_counter = Column('return_follower_counter', Integer)
-    return_received_ratio = Column('return_received_ratio', Float)
+    follow_request_received_counter = Column('follow_request_received_counter', Integer, default=0)
+    return_follower_counter = Column('return_follower_counter', Integer, default=0)
+    return_received_ratio = Column('return_received_ratio', Float, default=0)
 
 
 engine = create_engine('sqlite:///ig_bot.db', echo=True)

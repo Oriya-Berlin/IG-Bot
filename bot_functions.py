@@ -170,22 +170,38 @@ def get_following_number_on_PRIVATE_account(driver):  # maybe we need to add nam
 
 
 #  here we need the following number
-def get_following_number_on_PUBLIC_account(driver):  # maybe we need to add name parameter
+def get_following_number_on_PUBLIC_account(driver, name):  # maybe we need to add name parameter
     links = driver.find_elements_by_tag_name('a')
-    name = get_user_name_in_PUBLIC_current_page(driver)  # that row
+    #name = get_user_name_in_PUBLIC_current_page(driver)  # that row
     for link in links:
         if link.get_attribute('href') == f'https://www.instagram.com/{name}/following/':
             number = extract_and_convert_number(link.text)
             return number
 
 
-# scrap the followers number on current user page
-def get_followers_number(driver, username):  # maybe its public
-    element = driver.find_element_by_xpath(f"//a[@href='/{username}/followers/']/span")
-    number = element.get_attribute('title')
-    number = number.replace(',', '')
-    number = int(number)
-    return number
+# scrap the followers number on current PUBLIC user page
+def get_followers_number_on_PUBLIC_account(driver):
+    elements = driver.find_elements_by_tag_name('a')
+    for element in elements:
+        inner_text = element.get_attribute('innerHTML')
+        exist = inner_text.endswith(' followers')
+        if exist:
+            number = extract_and_convert_number(element.text)
+            return number
+
+
+# scrap the followers number on current PRIVATE user page
+def get_followers_number_on_PRIVATE_account(driver):
+    elements = driver.find_elements_by_tag_name('span')
+    for element in elements:
+        inner_text = element.get_attribute('innerHTML')
+        try:
+            exist = inner_text.endswith(' followers')
+            if exist:
+                number = extract_and_convert_number(element.text)
+                return number
+        except:
+            pass
 
 
 # watch story of user if exist

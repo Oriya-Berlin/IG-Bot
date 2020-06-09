@@ -1,7 +1,7 @@
 from create_tables import *
 from sqlalchemy.sql import exists
 from sqlalchemy import and_
-import datetime
+from general_functions import *
 
 
 # get all followers of specific shooter, return array
@@ -61,6 +61,12 @@ def is_he_in_my_OnHold_targets(target_name, shooter_name):
     return exist
 
 
+# boolean, check if that user is in 'HighPotentialTargets' table
+def is_he_in_HighPotentialTargets_table(name):
+    exist = session.query(exists().where(and_(HighPotentialTargets.potential_target_name==name))).scalar()
+    return exist
+
+
 # takes an array as a parameter, and return filtered array - without users that already in our targets/followers table
 def filter_target_list(target_list, shooter):
     filtered_list = []
@@ -106,15 +112,6 @@ def update_bot_successes(shooter):
 
             follower.date_of_success = target_details.target_followed_date
             session.commit()
-
-
-# boolean, check the difference between current date, to the date we start to follow on some target
-def check_date_diff(diff, bot_action_date):  # maybe we need to add 'shooter' and 'target' column as a parameters
-    now = datetime.datetime.now()
-    delta = (now - bot_action_date).days
-    if delta > diff:
-        return True
-    return False
 
 
 #
@@ -176,9 +173,21 @@ def delete_target_from_OnHold_table(follower, shooter):
 
 
 # insert user with high potential to be serial follower
-def insert_user_to_HighPotentialTargets_table():
-    pass
+def insert_user_to_HighPotentialTargets_table(name, ratio):
+    if not is_he_in_HighPotentialTargets_table(name):  # we need to add condition for public or private
+        high_potential = HighPotentialTargets()
+        high_potential.potential_target_name = name
+        high_potential.followers_following_ratio = ratio
+        session.add(high_potential)
+        session.commit()
+        session.close()
 
+
+#
+def increase_follow_request_counter(name):  # need to test that
+    user = session.query(HighPotentialTargets).filter_by(potential_target_name=name)
+    user.follow_request_received_counter += 1
+    session.commit()
 
 '''
 update_bot_successes('ben_liba')
