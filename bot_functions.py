@@ -38,12 +38,24 @@ def follow_in_current_page(driver):
 
 # unfollow after user when we stand in current page
 def unfollow_in_current_page(driver):
-    spans = driver.find_element_by_tag_name('span')
+
+    spans = driver.find_elements_by_tag_name('span')
+    flag = True
+
     for span in spans:
         if span.get_attribute('aria-label') == 'Following':
             span.click()
+            flag = False
             break
-    SLEEP(1.5)
+
+    if flag:
+        buttons = driver.find_elements_by_tag_name('button')
+        for btn in buttons:
+            if btn.get_attribute('innerHTML') == 'Requested':
+                btn.click()
+                break
+
+    SLEEP(2)
     buttons = driver.find_elements_by_tag_name('button')
     for btn in buttons:
         if btn.get_attribute('innerHTML') == 'Unfollow':
@@ -103,11 +115,12 @@ def save_your_login_info_window(driver):  #need to test that
     try:
         buttons = driver.find_elements_by_tag_name('button')
         for btn in buttons:
-            if btn.get_attribute('innerHTML') == 'Save Info':
-                """ 'Not Now' is the other option """
+            if btn.get_attribute('innerHTML') == 'Not Now':
+                """ 'Save Info' is the other option """
                 btn.click()
-                SLEEP(2)
                 driver.refresh()
+                SLEEP(2)
+                return
     except:
         return
 
@@ -129,18 +142,23 @@ def not_now_window(driver):
 
 
 # scroll followers list in current page till the end
-def scroll_all_followers_list(driver, target):
+def scroll_all_followers_list(driver):
     followers = driver.find_elements_by_tag_name('li')
     loaded_till_now = len(followers)
-    total_followers = get_followers_number(driver, target)
-
-    while (loaded_till_now < total_followers):
+    total_followers = get_followers_number_on_PUBLIC_account(driver)  # maybe also with private
+    total_followers = int(total_followers)
+    print(total_followers)
+    counter = 0
+    while loaded_till_now < total_followers:
+        print(loaded_till_now)
         try:
-            followers[loaded_till_now - 1].location_once_scrolled_into_view
+            SLEEP(1)
+            followers[loaded_till_now - 10].location_once_scrolled_into_view
             SLEEP(2.5)
             followers = driver.find_elements_by_tag_name('li')
             loaded_till_now = len(followers)
         except:
+            print(f' *  {counter}')
             continue
             
     SLEEP(1)

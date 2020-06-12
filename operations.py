@@ -30,12 +30,12 @@ def update_shooter_followers_table(driver, username, password, shooters_list):
         SLEEP(3)
 
         find_user_in_search_result(driver, shooter)
-        SLEEP(3)
+        SLEEP(5)
 
         open_followers_list_in_current_page(driver)
-        SLEEP(3)
+        SLEEP(5)
 
-        scroll_all_followers_list(driver, shooter)
+        scroll_all_followers_list(driver)
         SLEEP(5)
 
         updated_followers_list = all_followers_to_list(driver)
@@ -110,7 +110,7 @@ def start_shooting(driver, username, password, shooter):  # need to test that
                 if ratio > 1:
                     insert_user_to_HighPotentialTargets_table(target, ratio)
                     increase_follow_request_counter(target)
-                    
+
             # ------------------------------------------------------------------
 
             if not is_he_in_my_targets(target, shooter):
@@ -137,7 +137,7 @@ def unfollow_targets(driver, shooter, diff):  # need to test that
     expired_list = get_expired_targets(shooter, diff)
 
     for follower in expired_list:
-
+        SLEEP(2)
         search(driver, follower)
         SLEEP(3)
 
@@ -233,4 +233,6 @@ def many_shooters_operation():
 #######################################################################################################
 def MainOperation():
     pass
+
+
 

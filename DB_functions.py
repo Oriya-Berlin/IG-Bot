@@ -126,7 +126,7 @@ def get_expired_targets(shooter, diff):  # need to test that
 
 #
 def change_target_status(target_name, shooter):  # need to test that
-    user = session.query(Targets).filter_by(shooter_name=shooter, target_name=target_name)
+    user = session.query(Targets).filter_by(shooter_name=shooter, target_name=target_name).one()
     user.is_following_canceled = True
     session.commit()
 
@@ -191,7 +191,10 @@ def increase_follow_request_counter(name):  # need to test that
 
 '''
 update_bot_successes('ben_liba')
-x = get_bot_successes('ben_liba')
+x = get_bot_successes_list('ben_liba')
 print(x)
 print(len(x))
 '''
+
+#change_target_status('web__meb', 'ben_liba')
+

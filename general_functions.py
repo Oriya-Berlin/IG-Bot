@@ -30,9 +30,9 @@ def clean_url(url):
 
 # boolean, check the difference between current date, to the date we start to follow on some target
 def check_date_diff(diff, bot_action_date):  # maybe we need to add 'shooter' and 'target' column as a parameters
-    now = datetime.datetime.now()
+    now = datetime.date.today()
     delta = (now - bot_action_date).days
-    if delta > diff:
+    if delta == diff:
         return True
     return False
 
